@@ -29,7 +29,7 @@ public class UserController {
         } else {
             System.out.println(user.getUserName());
 
-            return "Giriş başarısız! Lütfen bilgilerinizi kontrol edindsds.";
+            return "Giriş başarısız! Lütfen bilgilerinizi kontrol edin.";
         }
     }
 }
