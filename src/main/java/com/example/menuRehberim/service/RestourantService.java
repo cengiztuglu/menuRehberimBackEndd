@@ -6,6 +6,6 @@ import com.example.menuRehberim.entity.Restourant;
 
 public interface RestourantService {
     RestourantDto save(RestourantDto restourantDto);
-    Restourant findByRestourantName(String restourantName);
+    Restourant findByUserName(String userName);
 
 }

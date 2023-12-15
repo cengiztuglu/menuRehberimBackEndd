@@ -6,7 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "menuIte_info")
+@Table(name = "menuItem_info")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,8 +15,8 @@ import java.io.Serializable;
 public class MenuItem implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq_menuIte_info",allocationSize = 1)
-    @GeneratedValue(generator = "seq_menuIte_info", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="seq_menuItem_info",allocationSize = 1)
+    @GeneratedValue(generator = "seq_menuItem_info", strategy = GenerationType.SEQUENCE)
     private long id;
     private String itemName;
     private String itemDefinition;

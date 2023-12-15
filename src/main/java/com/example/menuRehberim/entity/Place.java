@@ -6,7 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "plac_info")
+@Table(name = "place_info")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,16 +15,17 @@ import java.io.Serializable;
 public class Place implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq_plac_info",allocationSize = 1)
-    @GeneratedValue(generator = "seq_plac_info", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="seq_place_info",allocationSize = 1)
+    @GeneratedValue(generator = "seq_place_info", strategy = GenerationType.SEQUENCE)
     private long id;
+    private  String restourantName;
     private String placeDefinition;
     private String placeAdress;
     private  String placeBgPicName;
     private  String category;
 
     @OneToOne
-    @JoinColumn(name = "restourant_id")
+    @JoinColumn(name = "owner_id")
     private Restourant restourant;
     @OneToOne(mappedBy = "place")
     private Menu menu;

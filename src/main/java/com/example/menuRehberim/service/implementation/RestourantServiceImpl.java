@@ -18,13 +18,12 @@ public class RestourantServiceImpl implements RestourantService {
     @Override
     public RestourantDto save(RestourantDto restourantDto) {
         Restourant restourant=new Restourant();
-        restourant.setRestourantName(restourantDto.getRestourantName());
-        restourant.setRestourantPassword(restourantDto.getRestourantPassword());
+        restourant.setName(restourantDto.getName());
+        restourant.setSurName(restourantDto.getSurName());
+        restourant.setUserName(restourantDto.getUserName());
+        restourant.setEMail(restourantDto.getEMail());
+        restourant.setPassword(restourantDto.getPassword());
         Place place=new Place();
-        place.setPlaceAdress(restourantDto.getPlaceAdress());
-        place.setPlaceDefinition(restourantDto.getPlaceDefinition());
-        place.setPlaceBgPicName(restourantDto.getPlaceBgPicName());
-        place.setCategory(restourantDto.getCategory());
         restourant.setPlaceInfo(place);
         place.setRestourant(restourant);
         restourantRepository.save(restourant);
@@ -37,8 +36,8 @@ public class RestourantServiceImpl implements RestourantService {
     }
 
     @Override
-    public Restourant findByRestourantName(String restourantName) {
-        return restourantRepository.findByRestourantName(restourantName);
+    public Restourant findByUserName(String userName) {
+        return restourantRepository.findByUserName(userName);
 
     }
 }

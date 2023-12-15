@@ -7,10 +7,14 @@ import com.example.menuRehberim.entity.User;
 import com.example.menuRehberim.service.UserService;
 import com.example.menuRehberim.service.RestourantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Console;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,16 +46,26 @@ public class UserController {
         return  ResponseEntity.ok(restourantService.save(restourantDto));
     }
     @PostMapping("api/rlogin")
-    public  String LoginRestourant(@RequestBody RestourantDto loginRestourantRequest)
-    {
-        Restourant restourant = restourantService.findByRestourantName(loginRestourantRequest.getRestourantName());
-        if (restourant != null && restourant.getRestourantPassword().equals(loginRestourantRequest.getRestourantPassword())) {
-            return "Giriş başarılı!";
+    public ResponseEntity<?> loginRestaurant(@RequestBody RestourantDto loginRestaurantRequest) {
+        Restourant restaurant = restourantService.findByUserName(loginRestaurantRequest.getUserName());
+        if (restaurant != null && restaurant.getPassword().equals(loginRestaurantRequest.getPassword())) {
+            Long restaurantID = restaurant.getId(); // Assuming the ID retrieval works fine
 
+            if (restaurantID != null) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Content-Type", "application/json"); // JSON formatında yanıt
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .body("{\"restaurantID\": " + restaurantID + "}");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Restoran ID alınamadı.");
+            }
         } else {
-            System.out.println(restourant.getRestourantName());
-
-            return "Giriş başarısız! Lütfen bilgilerinizi kontrol .";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Giriş başarısız! Lütfen bilgilerinizi kontrol edin."); // Return an error message
         }
     }
+
+
 }

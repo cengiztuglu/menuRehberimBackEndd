@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "men_info")
+@Table(name = "menu_info")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,8 +16,8 @@ import java.util.List;
 public class Menu implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq_men_info",allocationSize = 1)
-    @GeneratedValue(generator = "seq_men_info", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="seq_menu_info",allocationSize = 1)
+    @GeneratedValue(generator = "seq_menu_info", strategy = GenerationType.SEQUENCE)
     private long id;
 
 
