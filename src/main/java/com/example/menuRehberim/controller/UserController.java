@@ -1,20 +1,21 @@
 package com.example.menuRehberim.controller;
 
+import com.example.menuRehberim.dto.PlaceDto;
 import com.example.menuRehberim.dto.RestourantDto;
 import com.example.menuRehberim.dto.UserDto;
+import com.example.menuRehberim.entity.Place;
 import com.example.menuRehberim.entity.Restourant;
 import com.example.menuRehberim.entity.User;
+import com.example.menuRehberim.service.PlaceService;
 import com.example.menuRehberim.service.UserService;
 import com.example.menuRehberim.service.RestourantService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +23,8 @@ import java.util.Map;
 public class UserController {
     private  final UserService userService;
     private  final RestourantService restourantService;
+    private  final PlaceService placeService;
+
 
 
     @PostMapping("api/user")
@@ -67,5 +70,12 @@ public class UserController {
         }
     }
 
+
+    @PostMapping ("api/placeAdd/{userName}")
+    public ResponseEntity<Place> addPlace(
+            @PathVariable String userName,
+            @RequestBody Place placeDto){
+        return  ResponseEntity.ok(placeService.update(placeDto,userName));
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.menuRehberim.entity;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Place implements Serializable {
     @SequenceGenerator(name="seq_place_info",allocationSize = 1)
     @GeneratedValue(generator = "seq_place_info", strategy = GenerationType.SEQUENCE)
     private long id;
+    @Nullable
     private  String restourantName;
     private String placeDefinition;
     private String placeAdress;
@@ -27,6 +29,7 @@ public class Place implements Serializable {
     @OneToOne
     @JoinColumn(name = "owner_id")
     private Restourant restourant;
+
     @OneToOne(mappedBy = "place")
     private Menu menu;
 
