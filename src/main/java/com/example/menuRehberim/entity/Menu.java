@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "menu_info")
+@Table(name = "menus_info")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,9 +22,9 @@ public class Menu implements Serializable {
 
 
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "place_id")
-    private Place place;
+    private Restourant restourant;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     private List<MenuItem> menuItems;

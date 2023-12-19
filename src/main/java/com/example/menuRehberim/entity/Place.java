@@ -23,14 +23,15 @@ public class Place implements Serializable {
     private  String restourantName;
     private String placeDefinition;
     private String placeAdress;
+    @Nullable
     private  String placeBgPicName;
+    @Nullable
     private  String category;
 
     @OneToOne
     @JoinColumn(name = "owner_id")
     private Restourant restourant;
 
-    @OneToOne(mappedBy = "place")
-    private Menu menu;
+
 
 }

@@ -1,11 +1,14 @@
 package com.example.menuRehberim.controller;
 
+import com.example.menuRehberim.dto.MenuItemDto;
 import com.example.menuRehberim.dto.PlaceDto;
 import com.example.menuRehberim.dto.RestourantDto;
 import com.example.menuRehberim.dto.UserDto;
+import com.example.menuRehberim.entity.MenuItem;
 import com.example.menuRehberim.entity.Place;
 import com.example.menuRehberim.entity.Restourant;
 import com.example.menuRehberim.entity.User;
+import com.example.menuRehberim.service.MenuItemService;
 import com.example.menuRehberim.service.PlaceService;
 import com.example.menuRehberim.service.UserService;
 import com.example.menuRehberim.service.RestourantService;
@@ -15,6 +18,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @RestController
@@ -24,6 +30,7 @@ public class UserController {
     private  final UserService userService;
     private  final RestourantService restourantService;
     private  final PlaceService placeService;
+    private  final MenuItemService menuItemService;
 
 
 
@@ -74,8 +81,22 @@ public class UserController {
     @PostMapping ("api/placeAdd/{userName}")
     public ResponseEntity<Place> addPlace(
             @PathVariable String userName,
-            @RequestBody Place placeDto){
+
+            @RequestBody Place placeDto
+    ){
+
         return  ResponseEntity.ok(placeService.update(placeDto,userName));
     }
+    @PostMapping ("api/menuItemAdd/{userName}")
+    public ResponseEntity<MenuItem> addMenuItem(
+            @PathVariable String userName,
+            @RequestBody MenuItem menuItemDto){
+        return  ResponseEntity.ok(menuItemService.save(menuItemDto,userName));
+    }
+    @GetMapping("api/getPlace")
+    public ResponseEntity<List<PlaceDto>> gerekliOlanlarıListele() {
+        return ResponseEntity.ok(placeService.getAll());
+    }
+
 
 }

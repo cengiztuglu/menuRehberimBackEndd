@@ -25,5 +25,7 @@ public class Restourant implements Serializable {
     private String password;
     @OneToOne(mappedBy = "restourant", cascade = CascadeType.ALL)
     private Place placeInfo;
+    @OneToOne(mappedBy = "restourant", cascade = CascadeType.ALL)
+    private Menu menuInfo;
 
 }
