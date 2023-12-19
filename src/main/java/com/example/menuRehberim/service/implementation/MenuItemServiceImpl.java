@@ -1,6 +1,7 @@
 package com.example.menuRehberim.service.implementation;
 
 import com.example.menuRehberim.dto.MenuItemDto;
+import com.example.menuRehberim.dto.PlaceDto;
 import com.example.menuRehberim.entity.Menu;
 import com.example.menuRehberim.entity.MenuItem;
 import com.example.menuRehberim.entity.Place;
@@ -11,6 +12,10 @@ import com.example.menuRehberim.repository.RestourantRepository;
 import com.example.menuRehberim.service.MenuItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +42,26 @@ public class MenuItemServiceImpl implements MenuItemService {
         menuItemRepository.save(menuItem);
         return menuItemDto;
     }
+    @Override
+    public List<MenuItemDto> getMenuItemsById(Long id) {
+        Menu menu = menuRepository.findById(id).orElse(null);
+        if (menu == null) {
+            // ID'ye sahip menü bulunamadı, hata durumu
+            return Collections.emptyList(); // veya null ya da başka bir hata mesajı
+        }
 
+        List<MenuItem> menuItems = menu.getMenuItems();
+        List<MenuItemDto> menuItemDtos = new ArrayList<>();
 
+        for (MenuItem menuItem : menuItems) {
+            MenuItemDto menuItemDto = new MenuItemDto();
+            menuItemDto.setId(menuItem.getId());
+            menuItemDto.setItemName(menuItem.getItemName());
+            menuItemDto.setItemDefinition(menuItem.getItemDefinition());
+            menuItemDto.setItemPrice(menuItem.getItemPrice());
+            menuItemDtos.add(menuItemDto);
+        }
+
+        return menuItemDtos;
+    }
 }

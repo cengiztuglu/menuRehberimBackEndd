@@ -66,8 +66,8 @@ public class PlaceServiceImpl implements PlaceService {
             placeDto.setRestourantName(it.getRestourantName());
             placeDto.setPlaceDefinition(it.getPlaceDefinition());
             placeDto.setPlaceAdress(it.getPlaceAdress());
-
             placeDto.setCategory(it.getCategory());
+
             placeDtos.add(placeDto);
 
             });

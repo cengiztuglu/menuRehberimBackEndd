@@ -98,5 +98,9 @@ public class UserController {
         return ResponseEntity.ok(placeService.getAll());
     }
 
-
+    @GetMapping("/api/getMenuItemsById/{id}")
+    public ResponseEntity<List<MenuItemDto>> getMenuItemsById(@PathVariable Long id) {
+        List<MenuItemDto> menuItemList = menuItemService.getMenuItemsById(id);
+        return ResponseEntity.ok(menuItemList);
+    }
 }
