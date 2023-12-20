@@ -8,18 +8,18 @@ import com.example.menuRehberim.entity.MenuItem;
 import com.example.menuRehberim.entity.Place;
 import com.example.menuRehberim.entity.Restourant;
 import com.example.menuRehberim.entity.User;
-import com.example.menuRehberim.service.MenuItemService;
-import com.example.menuRehberim.service.PlaceService;
-import com.example.menuRehberim.service.UserService;
-import com.example.menuRehberim.service.RestourantService;
+import com.example.menuRehberim.service.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -31,6 +31,7 @@ public class UserController {
     private  final RestourantService restourantService;
     private  final PlaceService placeService;
     private  final MenuItemService menuItemService;
+
 
 
 
@@ -102,5 +103,21 @@ public class UserController {
     public ResponseEntity<List<MenuItemDto>> getMenuItemsById(@PathVariable Long id) {
         List<MenuItemDto> menuItemList = menuItemService.getMenuItemsById(id);
         return ResponseEntity.ok(menuItemList);
+    }
+    @PostMapping("/api/upload/{restourantName}")
+    public String uploadFile(@RequestParam("file") MultipartFile file,@PathVariable String restourantName) {
+        // Dosyayı kaydetmek için bir dosya yoluna veya veritabanına kaydetmek istediğiniz yolu belirtin
+        String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/"+restourantName+".jpg" ;
+
+        try {
+            // Dosyayı belirtilen yola kaydet
+            file.transferTo(new File(filePath));
+
+            // Kullanıcı adını ekleme işlemi, dosya adı veya veritabanı kaydı şeklinde düşünebilirsiniz.
+            String savedFilePath = filePath + "_" ;
+            return "Dosya yükleme başarılı: " + savedFilePath;
+        } catch (IOException e) {
+            return "Dosya yükleme hatası: " + e.getMessage();
+        }
     }
 }
