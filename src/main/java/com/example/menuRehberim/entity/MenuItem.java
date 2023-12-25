@@ -20,8 +20,9 @@ public class MenuItem implements Serializable {
     private long id;
     private String itemName;
     private String itemDefinition;
-    private  String itemPicName;
+    private  byte[] itemPicName;
     private String itemPrice;
+    private  String itemCategory;
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;

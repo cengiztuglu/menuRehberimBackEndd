@@ -1,6 +1,10 @@
 package com.example.menuRehberim.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.*;
+
 @Data
 public class PlaceDto {
 
@@ -8,6 +12,6 @@ public class PlaceDto {
     private  String restourantName;
     private String placeDefinition;
     private String placeAdress;
-    private  String placeBgPicName;
+    private byte[] placeBgPicName;
     private  String category;
 }

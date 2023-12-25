@@ -7,6 +7,7 @@ public class MenuItemDto {
     private long id;
     private String itemName;
     private String itemDefinition;
-    private  String itemPicName;
+    private  byte[] itemPicName;
     private String itemPrice;
+    private  String itemCategory;
 }

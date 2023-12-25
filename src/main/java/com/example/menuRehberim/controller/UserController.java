@@ -4,12 +4,10 @@ import com.example.menuRehberim.dto.MenuItemDto;
 import com.example.menuRehberim.dto.PlaceDto;
 import com.example.menuRehberim.dto.RestourantDto;
 import com.example.menuRehberim.dto.UserDto;
-import com.example.menuRehberim.entity.MenuItem;
-import com.example.menuRehberim.entity.Place;
-import com.example.menuRehberim.entity.Restourant;
-import com.example.menuRehberim.entity.User;
+import com.example.menuRehberim.entity.*;
 import com.example.menuRehberim.service.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -56,6 +56,7 @@ public class UserController {
     public ResponseEntity<RestourantDto> addRestourant(@RequestBody RestourantDto restourantDto){
         return  ResponseEntity.ok(restourantService.save(restourantDto));
     }
+
     @PostMapping("api/rlogin")
     public ResponseEntity<?> loginRestaurant(@RequestBody RestourantDto loginRestaurantRequest) {
         Restourant restaurant = restourantService.findByUserName(loginRestaurantRequest.getUserName());
@@ -78,22 +79,45 @@ public class UserController {
         }
     }
 
-
-    @PostMapping ("api/placeAdd/{userName}")
+@Transactional
+    @PostMapping(value ="/api/placeAdd/{userName}" )
     public ResponseEntity<Place> addPlace(
             @PathVariable String userName,
+            @RequestParam("file") MultipartFile file,
+            @ModelAttribute Place placeDto
 
-            @RequestBody Place placeDto
-    ){
+    ) {
+        // Dosya yükleme işlemleri
+        if (!file.isEmpty()) {
+            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/"+userName+".jpg" ;
 
-        return  ResponseEntity.ok(placeService.update(placeDto,userName));
+            try {
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+                stream.write(file.getBytes());
+                stream.close();
+
+                byte[] imageData = file.getBytes();
+                System.out.println(imageData.toString());
+
+                placeDto.setPlaceBgPicName(imageData);
+                placeDto.setRestourantName(placeDto.getRestourantName());
+                placeDto.setPlaceAdress(placeDto.getPlaceAdress());
+                placeDto.setPlaceDefinition(placeDto.getPlaceDefinition());
+                placeDto.setCategory(placeDto.getCategory());
+                placeDto.setRestourant(placeDto.getRestourant());
+            } catch (IOException e) {
+                // Dosya içeriğini alırken bir hata oluştu
+                e.printStackTrace();
+            }
+        }
+
+        // Diğer parametrelerle ilgili işlemler...
+
+        return ResponseEntity.ok( placeService.update(placeDto, userName));
     }
-    @PostMapping ("api/menuItemAdd/{userName}")
-    public ResponseEntity<MenuItem> addMenuItem(
-            @PathVariable String userName,
-            @RequestBody MenuItem menuItemDto){
-        return  ResponseEntity.ok(menuItemService.save(menuItemDto,userName));
-    }
+
+
+
     @GetMapping("api/getPlace")
     public ResponseEntity<List<PlaceDto>> gerekliOlanlarıListele() {
         return ResponseEntity.ok(placeService.getAll());
@@ -104,20 +128,45 @@ public class UserController {
         List<MenuItemDto> menuItemList = menuItemService.getMenuItemsById(id);
         return ResponseEntity.ok(menuItemList);
     }
-    @PostMapping("/api/upload/{restourantName}")
-    public String uploadFile(@RequestParam("file") MultipartFile file,@PathVariable String restourantName) {
-        // Dosyayı kaydetmek için bir dosya yoluna veya veritabanına kaydetmek istediğiniz yolu belirtin
-        String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/"+restourantName+".jpg" ;
 
-        try {
-            // Dosyayı belirtilen yola kaydet
-            file.transferTo(new File(filePath));
 
-            // Kullanıcı adını ekleme işlemi, dosya adı veya veritabanı kaydı şeklinde düşünebilirsiniz.
-            String savedFilePath = filePath + "_" ;
-            return "Dosya yükleme başarılı: " + savedFilePath;
-        } catch (IOException e) {
-            return "Dosya yükleme hatası: " + e.getMessage();
+
+
+
+    @Transactional
+    @PostMapping(value ="/api/menuItemsAdd/{userName}" )
+    public ResponseEntity<MenuItem> addMenuItem(
+            @PathVariable String userName,
+            @RequestParam("file") MultipartFile file1,
+            @ModelAttribute MenuItem menuItemDto
+
+
+    ) {
+        // Dosya yükleme işlemleri
+        if (!file1.isEmpty()) {
+            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/"+userName+".jpg" ;
+
+            try {
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+                stream.write(file1.getBytes());
+                stream.close();
+
+                byte[] imageData = file1.getBytes();
+                System.out.println(imageData.toString());
+
+                menuItemDto.setItemPicName(imageData);
+
+            } catch (IOException e) {
+                // Dosya içeriğini alırken bir hata oluştu
+                e.printStackTrace();
+            }
         }
+
+        // Diğer parametrelerle ilgili işlemler...
+
+        return ResponseEntity.ok( menuItemService.save(menuItemDto, userName));
     }
+
 }
+
+

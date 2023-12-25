@@ -2,8 +2,11 @@ package com.example.menuRehberim.entity;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.Serializable;
 
 @Entity
@@ -21,10 +24,14 @@ public class Place implements Serializable {
     private long id;
     @Nullable
     private  String restourantName;
-    private String placeDefinition;
-    private String placeAdress;
+
     @Nullable
-    private  String placeBgPicName;
+    private String placeDefinition;
+
+    @Nullable
+    private String placeAdress;
+
+    private byte[] placeBgPicName;
     @Nullable
     private  String category;
 

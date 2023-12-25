@@ -32,9 +32,10 @@ public class MenuItemServiceImpl implements MenuItemService {
         Menu menu = menuRepository.findByRestourant(restourant);
         MenuItem menuItem=new MenuItem();
         menuItem.setItemName(menuItemDto.getItemName());
-        menuItem.setItemDefinition(menuItemDto.getItemName());
+        menuItem.setItemDefinition(menuItemDto.getItemDefinition());
         menuItem.setItemPicName(menuItemDto.getItemPicName());
         menuItem.setItemPrice(menuItemDto.getItemPrice());
+        menuItem.setItemCategory(menuItemDto.getItemCategory());
         menuItem.setMenu(menu);
 
 
@@ -59,6 +60,8 @@ public class MenuItemServiceImpl implements MenuItemService {
             menuItemDto.setItemName(menuItem.getItemName());
             menuItemDto.setItemDefinition(menuItem.getItemDefinition());
             menuItemDto.setItemPrice(menuItem.getItemPrice());
+            menuItemDto.setItemPicName(menuItem.getItemPicName());
+
             menuItemDtos.add(menuItemDto);
         }
 

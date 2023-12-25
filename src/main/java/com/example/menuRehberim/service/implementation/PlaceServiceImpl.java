@@ -10,6 +10,7 @@ import com.example.menuRehberim.service.PlaceService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -28,6 +29,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public PlaceDto save(PlaceDto placeDto) {
+
         Place place=new Place();
         place.setRestourantName(placeDto.getRestourantName());
         place.setPlaceDefinition(placeDto.getPlaceDefinition());
@@ -42,7 +44,6 @@ public class PlaceServiceImpl implements PlaceService {
     public Place update(Place placeDto, String userName) {
         Restourant restourant =restourantRepository.findByUserName(userName);
         Place place= placeRepository.findByRestourant(restourant);
-
         place.setRestourantName(placeDto.getRestourantName());
         place.setPlaceDefinition(placeDto.getPlaceDefinition());
         place.setPlaceAdress(placeDto.getPlaceAdress());
@@ -67,7 +68,8 @@ public class PlaceServiceImpl implements PlaceService {
             placeDto.setPlaceDefinition(it.getPlaceDefinition());
             placeDto.setPlaceAdress(it.getPlaceAdress());
             placeDto.setCategory(it.getCategory());
-
+            placeDto.setPlaceBgPicName( it.getPlaceBgPicName());
+            placeDto.setId(it.getId());
             placeDtos.add(placeDto);
 
             });
