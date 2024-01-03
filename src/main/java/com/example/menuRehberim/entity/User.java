@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "user_info")
@@ -15,7 +16,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq_user_info",allocationSize = 1)
+    @SequenceGenerator(name = "seq_user_info", allocationSize = 1)
     @GeneratedValue(generator = "seq_user_info", strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;
@@ -23,4 +24,6 @@ public class User implements Serializable {
     private String eMail;
     private String userName;
     private String password;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 }

@@ -1,9 +1,6 @@
 package com.example.menuRehberim.controller;
 
-import com.example.menuRehberim.dto.MenuItemDto;
-import com.example.menuRehberim.dto.PlaceDto;
-import com.example.menuRehberim.dto.RestourantDto;
-import com.example.menuRehberim.dto.UserDto;
+import com.example.menuRehberim.dto.*;
 import com.example.menuRehberim.entity.*;
 import com.example.menuRehberim.service.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,21 +24,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserController {
-    private  final UserService userService;
-    private  final RestourantService restourantService;
-    private  final PlaceService placeService;
-    private  final MenuItemService menuItemService;
-
-
+    private final UserService userService;
+    private final RestourantService restourantService;
+    private final PlaceService placeService;
+    private final MenuItemService menuItemService;
+    private final CommentService commentService;
 
 
     @PostMapping("api/user")
-    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
-        return  ResponseEntity.ok(userService.save(userDto));
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.save(userDto));
     }
+
     @PostMapping("api/login")
-    public  String LoginUser(@RequestBody UserDto loginRequest)
-    {
+    public String LoginUser(@RequestBody UserDto loginRequest) {
         User user = userService.findByUserName(loginRequest.getUserName());
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
             return "Giriş başarılı!";
@@ -52,9 +48,10 @@ public class UserController {
             return "Giriş başarısız! Lütfen bilgilerinizi kontrol .";
         }
     }
+
     @PostMapping("api/restourantAdd")
-    public ResponseEntity<RestourantDto> addRestourant(@RequestBody RestourantDto restourantDto){
-        return  ResponseEntity.ok(restourantService.save(restourantDto));
+    public ResponseEntity<RestourantDto> addRestourant(@RequestBody RestourantDto restourantDto) {
+        return ResponseEntity.ok(restourantService.save(restourantDto));
     }
 
     @PostMapping("api/rlogin")
@@ -79,8 +76,8 @@ public class UserController {
         }
     }
 
-@Transactional
-    @PostMapping(value ="/api/placeAdd/{userName}" )
+    @Transactional
+    @PostMapping(value = "/api/placeAdd/{userName}")
     public ResponseEntity<Place> addPlace(
             @PathVariable String userName,
             @RequestParam("file") MultipartFile file,
@@ -89,7 +86,7 @@ public class UserController {
     ) {
         // Dosya yükleme işlemleri
         if (!file.isEmpty()) {
-            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/"+userName+".jpg" ;
+            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/" + userName + ".jpg";
 
             try {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
@@ -113,9 +110,8 @@ public class UserController {
 
         // Diğer parametrelerle ilgili işlemler...
 
-        return ResponseEntity.ok( placeService.update(placeDto, userName));
+        return ResponseEntity.ok(placeService.update(placeDto, userName));
     }
-
 
 
     @GetMapping("api/getPlace")
@@ -130,11 +126,8 @@ public class UserController {
     }
 
 
-
-
-
     @Transactional
-    @PostMapping(value ="/api/menuItemsAdd/{userName}" )
+    @PostMapping(value = "/api/menuItemsAdd/{userName}")
     public ResponseEntity<MenuItem> addMenuItem(
             @PathVariable String userName,
             @RequestParam("file") MultipartFile file1,
@@ -144,7 +137,7 @@ public class UserController {
     ) {
         // Dosya yükleme işlemleri
         if (!file1.isEmpty()) {
-            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/"+userName+".jpg" ;
+            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/" + userName + ".jpg";
 
             try {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
@@ -164,9 +157,29 @@ public class UserController {
 
         // Diğer parametrelerle ilgili işlemler...
 
-        return ResponseEntity.ok( menuItemService.save(menuItemDto, userName));
+        return ResponseEntity.ok(menuItemService.save(menuItemDto, userName));
     }
 
+
+    @GetMapping("/api/ItemPull/{id}")
+    public ResponseEntity<MenuItemDto> getMenuItemById(@PathVariable Long id) {
+        MenuItemDto menuItemDto = menuItemService.getMenuItemById(id);
+
+        if (menuItemDto != null) {
+            return ResponseEntity.ok(menuItemDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @Transactional
+    @PostMapping(value = "/api/commentAdd/{userName}")
+    public ResponseEntity<CommentDto> commentAdd(
+            @PathVariable String userName,
+            @RequestBody CommentDto commentDto) {
+        return ResponseEntity.ok(commentService.save(commentDto, userName));
+    }
+
+
 }
-
-

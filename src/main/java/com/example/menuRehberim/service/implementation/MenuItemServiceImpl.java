@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     public MenuItem save(MenuItem menuItemDto, String userName) {
         Restourant restourant = restourantRepository.findByUserName(userName);
         Menu menu = menuRepository.findByRestourant(restourant);
-        MenuItem menuItem=new MenuItem();
+        MenuItem menuItem = new MenuItem();
         menuItem.setItemName(menuItemDto.getItemName());
         menuItem.setItemDefinition(menuItemDto.getItemDefinition());
         menuItem.setItemPicName(menuItemDto.getItemPicName());
@@ -39,10 +40,10 @@ public class MenuItemServiceImpl implements MenuItemService {
         menuItem.setMenu(menu);
 
 
-
         menuItemRepository.save(menuItem);
         return menuItemDto;
     }
+
     @Override
     public List<MenuItemDto> getMenuItemsById(Long id) {
         Menu menu = menuRepository.findById(id).orElse(null);
@@ -67,4 +68,29 @@ public class MenuItemServiceImpl implements MenuItemService {
 
         return menuItemDtos;
     }
+
+    @Override
+    public MenuItemDto getMenuItemById(Long menuItemId) {
+        Optional<MenuItem> menuItemOptional = menuItemRepository.findById(menuItemId);
+
+        if (menuItemOptional.isPresent()) {
+            MenuItem menuItem = menuItemOptional.get();
+            MenuItemDto menuItemDto = new MenuItemDto();
+            menuItemDto.setId(menuItem.getId());
+            menuItemDto.setItemName(menuItem.getItemName());
+            menuItemDto.setItemDefinition(menuItem.getItemDefinition());
+            menuItemDto.setItemPrice(menuItem.getItemPrice());
+            menuItemDto.setItemPicName(menuItem.getItemPicName());
+            menuItemDto.setItemCategory(menuItem.getItemCategory());
+
+            return menuItemDto;
+        } else {
+            // Belirli ID'ye sahip öğe bulunamadı, hata durumu
+            return null; // veya hata mesajı döndürebilirsiniz
+        }
+
+
+    }
 }
+
+
