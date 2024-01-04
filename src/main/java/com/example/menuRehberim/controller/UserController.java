@@ -182,4 +182,16 @@ public class UserController {
     }
 
 
+    @GetMapping("/api/commentList/{itemId}")
+    public ResponseEntity<List<CommentDto>> getMenuItemComments(@PathVariable Long itemId) {
+        List<CommentDto> commentDtoList = commentService.getMenuItemComments(itemId);
+
+        if (commentDtoList != null) {
+            return ResponseEntity.ok(commentDtoList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

@@ -1,6 +1,9 @@
 package com.example.menuRehberim.service.implementation;
 import com.example.menuRehberim.dto.CommentDto;
+import com.example.menuRehberim.dto.MenuItemDto;
 import com.example.menuRehberim.entity.Comment;
+import com.example.menuRehberim.entity.Menu;
+import com.example.menuRehberim.entity.MenuItem;
 import com.example.menuRehberim.entity.User;
 import com.example.menuRehberim.repository.CommentRepository;
 import com.example.menuRehberim.repository.UserRepository;
@@ -19,22 +22,57 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+
     @Override
     public CommentDto save(CommentDto commentDto, String userName) {
         User user = userRepository.findByUserName(userName);
 
-            // Yeni bir yorum oluştur
-            Comment comment = new Comment();
-            comment.setUser(user);
-            comment.setCommentText(commentDto.getCommentText());
-            comment.setScore(commentDto.getScore());
-
-            commentRepository.save(comment);
-
-            return commentDto;
+        // Yeni bir yorum oluştur
+        Comment comment = new Comment();
+        comment.setUser(user);
+        comment.setCommentText(commentDto.getCommentText());
+        comment.setScore(commentDto.getScore());
+        comment.setItemId(commentDto.getItemId());
+        comment.setCommentDate(commentDto.getCommentDate());
 
 
+        commentRepository.save(comment);
 
+        return commentDto;
+
+
+    }
+
+
+    @Override
+    public List<CommentDto> getMenuItemComments(Long itemId) {
+        List<Comment> comments = commentRepository.findByItemId(itemId);
+
+
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentDto commentDto = new CommentDto();
+            commentDto.setCommentText(comment.getCommentText());
+            commentDto.setScore(comment.getScore());
+            commentDto.setItemId(comment.getItemId());
+            commentDto.setCommentDate(comment.getCommentDate());
+
+            // Kullanıcıya ait bilgileri almak için
+            User user = comment.getUser();
+            if (user != null) {
+                Long userId = user.getId();
+                String username = user.getUserName();
+                // Diğer kullanıcı bilgilerini burada işleyebilirsiniz
+
+                // Örneğin:
+                commentDto.setUserName(username);
+                // Diğer kullanıcı bilgilerini de CommentDto'ya ekleyebilirsiniz
+            }
+
+            commentDtos.add(commentDto);
+        }
+
+        return commentDtos;
 
     }
 }
