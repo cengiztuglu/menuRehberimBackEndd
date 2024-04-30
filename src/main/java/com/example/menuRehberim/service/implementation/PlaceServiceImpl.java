@@ -30,36 +30,33 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public PlaceDto save(PlaceDto placeDto) {
 
-        Place place=new Place();
+        Place place = new Place();
         place.setRestourantName(placeDto.getRestourantName());
         place.setPlaceDefinition(placeDto.getPlaceDefinition());
         place.setPlaceAdress(placeDto.getPlaceDefinition());
         place.setPlaceBgPicName(placeDto.getPlaceBgPicName());
         place.setCategory(placeDto.getCategory());
         placeRepository.save(place);
-                return placeDto;
+        return placeDto;
     }
 
     @Override
     public Place update(Place placeDto, String userName) {
-        Restourant restourant =restourantRepository.findByUserName(userName);
-        Place place= placeRepository.findByRestourant(restourant);
+        Restourant restourant = restourantRepository.findByUserName(userName);
+        Place place = placeRepository.findByRestourant(restourant);
         place.setRestourantName(placeDto.getRestourantName());
         place.setPlaceDefinition(placeDto.getPlaceDefinition());
         place.setPlaceAdress(placeDto.getPlaceAdress());
         place.setCategory(placeDto.getCategory());
         place.setPlaceBgPicName(placeDto.getPlaceBgPicName());
-
-
         placeRepository.save(place);
-
         return placeDto;
 
     }
 
     @Override
     public List<PlaceDto> getAll() {
-        List<Place>places=placeRepository.findAll();
+        List<Place> places = placeRepository.findAll();
         List<PlaceDto> placeDtos = new ArrayList<>();
         places.forEach(it -> {
             PlaceDto placeDto = new PlaceDto();
@@ -68,11 +65,11 @@ public class PlaceServiceImpl implements PlaceService {
             placeDto.setPlaceDefinition(it.getPlaceDefinition());
             placeDto.setPlaceAdress(it.getPlaceAdress());
             placeDto.setCategory(it.getCategory());
-            placeDto.setPlaceBgPicName( it.getPlaceBgPicName());
+            placeDto.setPlaceBgPicName(it.getPlaceBgPicName());
             placeDto.setId(it.getId());
             placeDtos.add(placeDto);
 
-            });
+        });
         return placeDtos;
     }
 }

@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface CommentService {
     CommentDto save(CommentDto commentDto, String userName);
-    List<CommentDto> getMenuItemComments(Long itemId); // Yeni metodu burada tanımlayın
-
-
+    List<CommentDto> getMenuItemComments(Long itemId);
 }

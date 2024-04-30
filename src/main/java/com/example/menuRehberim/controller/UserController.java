@@ -30,7 +30,6 @@ public class UserController {
     private final MenuItemService menuItemService;
     private final CommentService commentService;
 
-
     @PostMapping("api/user")
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.save(userDto));
@@ -84,9 +83,8 @@ public class UserController {
             @ModelAttribute Place placeDto
 
     ) {
-        // Dosya yükleme işlemleri
         if (!file.isEmpty()) {
-            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/" + userName + ".jpg";
+            String filePath = "C:/Users/Cengiz/Desktop/../../src/main/java/Assets/" + userName + ".jpg";
 
             try {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
@@ -103,12 +101,10 @@ public class UserController {
                 placeDto.setCategory(placeDto.getCategory());
                 placeDto.setRestourant(placeDto.getRestourant());
             } catch (IOException e) {
-                // Dosya içeriğini alırken bir hata oluştu
                 e.printStackTrace();
             }
         }
 
-        // Diğer parametrelerle ilgili işlemler...
 
         return ResponseEntity.ok(placeService.update(placeDto, userName));
     }
@@ -125,7 +121,6 @@ public class UserController {
         return ResponseEntity.ok(menuItemList);
     }
 
-
     @Transactional
     @PostMapping(value = "/api/menuItemsAdd/{userName}")
     public ResponseEntity<MenuItem> addMenuItem(
@@ -133,11 +128,9 @@ public class UserController {
             @RequestParam("file") MultipartFile file1,
             @ModelAttribute MenuItem menuItemDto
 
-
     ) {
-        // Dosya yükleme işlemleri
         if (!file1.isEmpty()) {
-            String filePath = "C:/Users/Cengiz/Desktop/Ders_Notları_Ara_Sınava_Kadar_Olan_Kısım/menuRehberimBackEndd/src/main/java/Assets/" + userName + ".jpg";
+            String filePath = "C:/Users/Cengiz/Desktop/../../src/main/java/Assets/" + userName + ".jpg";
 
             try {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
@@ -150,16 +143,11 @@ public class UserController {
                 menuItemDto.setItemPicName(imageData);
 
             } catch (IOException e) {
-                // Dosya içeriğini alırken bir hata oluştu
                 e.printStackTrace();
             }
         }
-
-        // Diğer parametrelerle ilgili işlemler...
-
         return ResponseEntity.ok(menuItemService.save(menuItemDto, userName));
     }
-
 
     @GetMapping("/api/ItemPull/{id}")
     public ResponseEntity<MenuItemDto> getMenuItemById(@PathVariable Long id) {
@@ -172,7 +160,6 @@ public class UserController {
         }
     }
 
-
     @Transactional
     @PostMapping(value = "/api/commentAdd/{userName}")
     public ResponseEntity<CommentDto> commentAdd(
@@ -180,7 +167,6 @@ public class UserController {
             @RequestBody CommentDto commentDto) {
         return ResponseEntity.ok(commentService.save(commentDto, userName));
     }
-
 
     @GetMapping("/api/commentList/{itemId}")
     public ResponseEntity<List<CommentDto>> getMenuItemComments(@PathVariable Long itemId) {

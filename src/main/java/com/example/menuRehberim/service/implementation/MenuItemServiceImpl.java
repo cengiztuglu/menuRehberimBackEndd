@@ -48,8 +48,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     public List<MenuItemDto> getMenuItemsById(Long id) {
         Menu menu = menuRepository.findById(id).orElse(null);
         if (menu == null) {
-            // ID'ye sahip menü bulunamadı, hata durumu
-            return Collections.emptyList(); // veya null ya da başka bir hata mesajı
+            return Collections.emptyList();
         }
 
         List<MenuItem> menuItems = menu.getMenuItems();

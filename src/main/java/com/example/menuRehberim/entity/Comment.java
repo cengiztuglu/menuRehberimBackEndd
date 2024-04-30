@@ -23,6 +23,6 @@ public class Comment {
     private Long itemId;
     private Date commentDate;
     @ManyToOne
-    @JoinColumn(name = "user_id") // Kullanıcı ID'si ile ilişkilendirme
+    @JoinColumn(name = "user_id")
     private User user;
 }

@@ -19,11 +19,11 @@ import java.io.Serializable;
 public class Place implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq_place_info",allocationSize = 1)
+    @SequenceGenerator(name = "seq_place_info", allocationSize = 1)
     @GeneratedValue(generator = "seq_place_info", strategy = GenerationType.SEQUENCE)
     private long id;
     @Nullable
-    private  String restourantName;
+    private String restourantName;
 
     @Nullable
     private String placeDefinition;
@@ -33,12 +33,11 @@ public class Place implements Serializable {
 
     private byte[] placeBgPicName;
     @Nullable
-    private  String category;
+    private String category;
 
     @OneToOne
     @JoinColumn(name = "owner_id")
     private Restourant restourant;
-
 
 
 }

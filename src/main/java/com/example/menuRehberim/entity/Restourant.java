@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class Restourant implements Serializable {
 
     @Id
-    @SequenceGenerator(name="seq_restourant_info",allocationSize = 1)
+    @SequenceGenerator(name = "seq_restourant_info", allocationSize = 1)
     @GeneratedValue(generator = "seq_restourant_info", strategy = GenerationType.SEQUENCE)
     private long id;
     private String name;

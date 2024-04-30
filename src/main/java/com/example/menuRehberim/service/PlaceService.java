@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface PlaceService {
     PlaceDto save(PlaceDto placeDto);
+
     Place update(Place placeDto, String userName);
+
     List<PlaceDto> getAll();
 
 

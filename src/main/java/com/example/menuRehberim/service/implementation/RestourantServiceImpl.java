@@ -18,24 +18,19 @@ public class RestourantServiceImpl implements RestourantService {
 
     @Override
     public RestourantDto save(RestourantDto restourantDto) {
-        Restourant restourant=new Restourant();
+        Restourant restourant = new Restourant();
         restourant.setName(restourantDto.getName());
         restourant.setSurName(restourantDto.getSurName());
         restourant.setUserName(restourantDto.getUserName());
         restourant.setEMail(restourantDto.getEMail());
         restourant.setPassword(restourantDto.getPassword());
-        Place place=new Place();
-        Menu menu=new Menu();
+        Place place = new Place();
+        Menu menu = new Menu();
         restourant.setMenuInfo(menu);
         restourant.setPlaceInfo(place);
         menu.setRestourant(restourant);
         place.setRestourant(restourant);
         restourantRepository.save(restourant);
-
-
-
-
-
         return restourantDto;
     }
 
